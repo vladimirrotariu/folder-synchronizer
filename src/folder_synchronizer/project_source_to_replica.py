@@ -57,7 +57,7 @@ async def project_source_into_replica(
             for _ in range(included_count_source - included_count_replica):
                 reporting_pattern = (
                     f"CPY FILE FROM DIR {os.path.dirname(path_file_source)}"
-                    + f"TO {os.path.dirname(to_be_path_file_replica)}"
+                    + f" TO {os.path.dirname(to_be_path_file_replica)}"
                 )
                 print(reporting_pattern, "\n")
 
