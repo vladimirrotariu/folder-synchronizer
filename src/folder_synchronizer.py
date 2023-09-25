@@ -6,6 +6,7 @@ import asyncio
 from input_processing_actions import (
     read_path,
     validate_folder_path,
+    read_validate_synchronization_interval,
 )
 
 print("Welcome to the Folder Synchronizer app!", "\n")
@@ -24,7 +25,7 @@ validate_folder_path(os_independent_path_replica_folder)
 
 os_independent_path_log_file = read_path(prompt_log_file)
 
-# synchronization_interval: float = read_validate_synchronization_interval()
+synchronization_interval: float = read_validate_synchronization_interval()
 
 
 def hash_file(file_name: str) -> str:
@@ -158,3 +159,6 @@ async def synchronize_periodically(synchronization_interval: float) -> None:
             os_independent_path_log_file,
         )
         await asyncio.sleep(synchronization_interval)
+
+
+asyncio.run(synchronize_periodically(synchronization_interval))
