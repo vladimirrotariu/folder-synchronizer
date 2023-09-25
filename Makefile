@@ -3,7 +3,7 @@ SRC_DIR := src
 .PHONY: build test test-coverage test-report
 
 build: venv 
-	. .venv/bin/activate && python src/folder_synchronizer.py
+	. .venv/bin/activate && python src/folder_synchronizer/folder_synchronizer.py
 
 test: venv 
 	. .venv/bin/activate && pytest -v

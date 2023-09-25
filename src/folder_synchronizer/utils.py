@@ -1,5 +1,24 @@
-import re
 import os
+import re
+
+
+def create_directories(
+    path_source_folder: str, path_replica_folder: str, directory_paths_source: str
+):
+    for directory_path in directory_paths_source:
+        path_subdirectory_replica = directory_path.replace(
+            path_source_folder, path_replica_folder
+        )
+        os.makedirs(path_subdirectory_replica, exist_ok=True)
+
+
+def rename_files(subpaths_source, subpaths_replica):
+    for index in range(len(subpaths_replica)):
+        renaming_path = os.path.join(
+            os.path.dirname(subpaths_replica[index]),
+            os.path.basename(subpaths_source[index]),
+        )
+        os.rename(subpaths_replica[index], renaming_path)
 
 
 def read_path(prompt: str) -> str:
@@ -23,7 +42,7 @@ def read_path(prompt: str) -> str:
             return os_independent_path
 
 
-def read_validate_synchronization_interval() -> float:
+def read_time_interval() -> float:
     while True:
         raw_synchronization_interval = input(
             "The synchronization interval (in seconds): "
