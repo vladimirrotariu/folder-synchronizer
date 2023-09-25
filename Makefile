@@ -8,9 +8,6 @@ build: venv
 test: venv 
 	. .venv/bin/activate && pytest -v
 
-test-coverage: venv
-	. .venv/bin/activate && pytest -v --cov=src/folder_synchronizer.py
-
 test-report: venv 
 	. .venv/bin/activate && pytest -v --junitxml=test-results.xml
 

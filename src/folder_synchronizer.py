@@ -71,7 +71,7 @@ def hash_folder_files(path_folder: str):
 
 
 def project_source_into_replica_folder(
-    path_source_folder: str, path_replica_folder: str
+    path_source_folder: str, path_replica_folder: str, path_log_file: str
 ):
     directory_paths_source, paths_hashes_files_source = hash_folder_files(
         path_source_folder
@@ -121,11 +121,13 @@ def project_source_into_replica_folder(
                     included_count_replica += 1
 
             for _ in range(included_count_source - included_count_replica):
-                print(
-                    f"Copied the file {path_file_source} in the directory { os.path.dirname(to_be_path_file_replica)}",
-                    "\n",
-                )
+                reporting_pattern = f"Cp file {path_file_source} in dir {os.path.dirname(to_be_path_file_replica)}"
+                print(reporting_pattern)
+
                 shutil.copy2(path_file_source, os.path.dirname(to_be_path_file_replica))
+
+                with open(path_log_file, "a") as file:
+                    file.write(reporting_pattern)
 
             _, paths_hashes_files = hash_folder_files(path_replica_folder)
 
@@ -150,4 +152,5 @@ def project_source_into_replica_folder(
 project_source_into_replica_folder(
     os_independent_path_source_folder,
     os_independent_path_replica_folder,
+    os_independent_path_log_file,
 )
