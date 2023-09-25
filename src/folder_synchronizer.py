@@ -1,6 +1,7 @@
 import os
 import hashlib
 import shutil
+import asyncio
 
 from input_processing_actions import (
     read_path,
@@ -12,7 +13,7 @@ print("Welcome to the Folder Synchronizer app!", "\n")
 prompt_source_folder = "The path of the source folder: "
 prompt_replica_folder = "The path of the replica folder: "
 prompt_log_file = (
-    "The path of the log file (will be created automatically if it doesn't exist)"
+    "The path of the log file (will be created automatically if it doesn't exist): "
 )
 
 os_independent_path_source_folder: str = read_path(prompt_source_folder)
@@ -70,7 +71,7 @@ def hash_folder_files(path_folder: str):
     return [directory_paths, paths_hashes_files]
 
 
-def project_source_into_replica_folder(
+async def project_source_into_replica_folder(
     path_source_folder: str, path_replica_folder: str, path_log_file: str
 ):
     directory_paths_source, paths_hashes_files_source = hash_folder_files(
@@ -121,13 +122,13 @@ def project_source_into_replica_folder(
                     included_count_replica += 1
 
             for _ in range(included_count_source - included_count_replica):
-                reporting_pattern = f"Cp file {path_file_source} in dir {os.path.dirname(to_be_path_file_replica)}"
-                print(reporting_pattern)
+                reporting_pattern = f"CPY FILE {path_file_source} IN DIR {os.path.dirname(to_be_path_file_replica)}"
+                print(reporting_pattern, "\n")
 
                 shutil.copy2(path_file_source, os.path.dirname(to_be_path_file_replica))
 
                 with open(path_log_file, "a") as file:
-                    file.write(reporting_pattern)
+                    file.write(reporting_pattern + "\n")
 
             _, paths_hashes_files = hash_folder_files(path_replica_folder)
 
@@ -149,8 +150,11 @@ def project_source_into_replica_folder(
                 os.rename(subpaths_replica[index], renaming_path)
 
 
-project_source_into_replica_folder(
-    os_independent_path_source_folder,
-    os_independent_path_replica_folder,
-    os_independent_path_log_file,
-)
+async def synchronize_periodically(synchronization_interval: float) -> None:
+    while True:
+        await project_source_into_replica_folder(
+            os_independent_path_source_folder,
+            os_independent_path_replica_folder,
+            os_independent_path_log_file,
+        )
+        await asyncio.sleep(synchronization_interval)
