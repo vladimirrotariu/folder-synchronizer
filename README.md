@@ -1,3 +1,7 @@
+<div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap;">
+  <img alt="Static Badge" src="https://img.shields.io/badge/Python-%23ADD8E6?logo=python">
+  <img alt="Static Badge" src="https://img.shields.io/badge/Docker-white?logo=docker">
+</div>
 # One-way OS-independent folder synchronizer
 
 ## Description
